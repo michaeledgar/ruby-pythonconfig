@@ -1,0 +1,11 @@
+=== 1.0.1 / 2009-03-28
+
+* Forgot to remove the bin directory. Sorry!
+
+=== 1.0.0 / 2009-03-28
+
+* First release
+
+  * Multiple sections are parsed
+  * Interpolation using %(key) supported
+  * Multiline values supported
