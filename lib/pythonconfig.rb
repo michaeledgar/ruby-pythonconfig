@@ -1,4 +1,6 @@
 require 'delegate'
+require File.expand_path(File.join(File.dirname(__FILE__), "extensions.rb"))
+#require File.expand_path(File.join(File.dirname(__FILE__), "extensions.rb"))
 # = PythonConfig
 # Class for parsing and writing Python configuration files created by the
 # ConfigParser classes in Python. These files are structured like this:
@@ -132,9 +134,27 @@ module PythonConfig
       @source_hash = source
       super(@source_hash)
     end
-    def [](key) #:nodoc:
-      str = @source_hash[key]
-      interpolate(str)
+    def [](*args) #:nodoc:
+      raise ArgumentError.new "Must provide either 1 or 2 args" unless (1..2).include? args.size
+      key = args[0]
+      case args.size
+      when 1
+        str = @source_hash[key]
+        interpolate(str)
+      when 2
+        str = @source_hash[key]
+        str = interpolate str
+        type = args[1]
+        if type == Integer || type == Fixnum || type == Bignum
+          str.to_i
+        elsif type =~ /bool/ || type =~ /Bool/
+          str.to_bool
+        elsif type == Float
+          str.to_f
+        elsif type == Array
+          str.split(",").map {|s| s.strip}
+        end
+      end
     end
     
     def interpolate(str, cur_depth=0) #:nodoc:
