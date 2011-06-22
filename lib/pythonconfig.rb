@@ -1,6 +1,4 @@
 require 'delegate'
-require File.expand_path(File.join(File.dirname(__FILE__), "extensions.rb"))
-#require File.expand_path(File.join(File.dirname(__FILE__), "extensions.rb"))
 # = PythonConfig
 # Class for parsing and writing Python configuration files created by the
 # ConfigParser classes in Python. These files are structured like this:
@@ -148,7 +146,7 @@ module PythonConfig
         if type == Integer || type == Fixnum || type == Bignum
           str.to_i
         elsif type =~ /bool/ || type =~ /Bool/
-          str.to_bool
+          str == 'true'
         elsif type == Float
           str.to_f
         elsif type == Array
